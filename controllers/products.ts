@@ -69,12 +69,13 @@ const addProduct = async ({ request, response }: { request: any; response: any }
 }
 
 const updateProduct = async ({ params, request, response }: { params: { id: string }; request: any; response: any }) => {
-  const product  = Products.filter((product) => product.id === params.id)
+    const product: Product | undefined = Products.find((product) => product.id === params.id)
 
   if (product) {
     const body = await request.body
-    const updatedData: { name?: string; description?: string; price?: number } = body.value
-    Products = Products.map((product) => (product.id === params.id ? { ...product, ...updatedData } : product))
+    
+    const updatedProduct: { name?: string; description?: string; price?: number } = body.value
+    Products = Products.map((product) => (product.id === params.id ? { ...product, ...updatedProduct } : product))
 
     response.status = 200
     response.body = {
